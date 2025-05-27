@@ -153,8 +153,8 @@ function merge_package() {
 }
 
 
-git_sparse_clone openwrt-24.10 https://github.com/sbwml/luci-theme-argon luci-theme-argon
-git_sparse_clone openwrt-24.10 https://github.com/sbwml/luci-theme-argon luci-app-argon-config
+git_sparse_clone main https://github.com/Jaykwok2999/istoreos-theme luci-theme-argon
+git_sparse_clone main https://github.com/Jaykwok2999/istoreos-theme luci-app-argon-config
 
 
 
