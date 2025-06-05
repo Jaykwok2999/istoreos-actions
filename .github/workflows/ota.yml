@@ -45,27 +45,27 @@ jobs:
             };
 
             const fs = require('fs');
-            fs.writeFileSync('profiles.json', JSON.stringify(json, null, 4));
-            core.setOutput("profiles_url", target.browser_download_url);
-            core.setOutput("profiles_name", target.name);
+            fs.writeFileSync('fw.json', JSON.stringify(json, null, 4));
+            core.setOutput("fw_url", target.browser_download_url);
+            core.setOutput("fw_name", target.name);
 
       - name: Download firmware to calculate sha256
         run: |
-          curl -L "${{ steps.get_release.outputs.profiles_url }}" -o "${{ steps.get_release.outputs.profiles_name }}"
-          sha256sum "${{ steps.get_release.outputs.profiles_name }}" | cut -d ' ' -f1 > checksum.txt
+          curl -L "${{ steps.get_release.outputs.fw_url }}" -o "${{ steps.get_release.outputs.fw_name }}"
+          sha256sum "${{ steps.get_release.outputs.fw_name }}" | cut -d ' ' -f1 > checksum.txt
 
       - name: Update sha256 in JSON
         run: |
           sha=$(cat checksum.txt)
-          jq --arg sha "$sha" '.x86_64[0].sha256sum = $sha' profiles.json > profiles_tmp.json
-          mv profiles_tmp.json profiles.json
+          jq --arg sha "$sha" '.x86_64[0].sha256sum = $sha' fw.json > fw_tmp.json
+          mv fw_tmp.json fw.json
 
-      - name: Commit and push profiles.json to api branch
+      - name: Commit and push fw.json to api branch
         run: |
-          git config --global user.email "194788255+Jaykwok2999@users.noreply.github.com"
-          git config --global user.name "Jaykwok2999"
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
           rm -rf ./* .[^.]* || true  # 清空 api 分支中的旧内容
-          mv profiles.json profiles.json
-          git add profiles.json
-          git commit -m "Update profiles.json @ $(date -u '+%Y-%m-%d %H:%M:%S')"
+          mv fw.json fw.json
+          git add fw.json
+          git commit -m "Update fw.json @ $(date -u '+%Y-%m-%d %H:%M:%S')"
           git push origin HEAD:api --force
