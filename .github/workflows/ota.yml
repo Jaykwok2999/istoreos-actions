@@ -38,7 +38,7 @@ jobs:
               "x86_64": [
                 {
                   "build_date": Math.floor(new Date(release.data.published_at).getTime() / 1000).toString(),
-                  "sha256sum": "",  // placeholder
+                  "sha256sums": "",  // placeholder
                   "url": target.browser_download_url
                 }
               ]
@@ -52,12 +52,12 @@ jobs:
       - name: Download firmware to calculate sha256
         run: |
           curl -L "${{ steps.get_release.outputs.fw_url }}" -o "${{ steps.get_release.outputs.fw_name }}"
-          sha256sum "${{ steps.get_release.outputs.fw_name }}" | cut -d ' ' -f1 > checksum.txt
+          sha256sums "${{ steps.get_release.outputs.fw_name }}" | cut -d ' ' -f1 > checksum.txt
 
       - name: Update sha256 in JSON
         run: |
           sha=$(cat checksum.txt)
-          jq --arg sha "$sha" '.x86_64[0].sha256sum = $sha' fw.json > fw_tmp.json
+          jq --arg sha "$sha" '.x86_64[0].sha256sums = $sha' fw.json > fw_tmp.json
           mv fw_tmp.json fw.json
 
       - name: Commit and push fw.json to api branch
