@@ -1,0 +1,71 @@
+name: Update OTA JSON
+
+on:
+  workflow_dispatch:  # 手动触发
+  schedule:
+    - cron: '0 3 * * *'  # 每天凌晨 3 点自动执行一次（可改）
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout api branch
+        uses: actions/checkout@v4
+        with:
+          ref: api
+
+      - name: Fetch latest release info
+        id: get_release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const release = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+
+            const assets = release.data.assets;
+            const target = assets.find(asset =>
+              asset.name === 'istoreos-x86-64-generic-squashfs-combined-efi.img.gz'
+            );
+
+            if (!target) {
+              throw new Error("Target firmware not found in the latest release.");
+            }
+
+            const json = {
+              "x86_64": [
+                {
+                  "build_date": Math.floor(new Date(release.data.published_at).getTime() / 1000).toString(),
+                  "sha256sum": "",  // placeholder
+                  "url": target.browser_download_url
+                }
+              ]
+            };
+
+            const fs = require('fs');
+            fs.writeFileSync('fw.json', JSON.stringify(json, null, 4));
+            core.setOutput("fw_url", target.browser_download_url);
+            core.setOutput("fw_name", target.name);
+
+      - name: Download firmware to calculate sha256
+        run: |
+          curl -L "${{ steps.get_release.outputs.fw_url }}" -o "${{ steps.get_release.outputs.fw_name }}"
+          sha256sum "${{ steps.get_release.outputs.fw_name }}" | cut -d ' ' -f1 > checksum.txt
+
+      - name: Update sha256 in JSON
+        run: |
+          sha=$(cat checksum.txt)
+          jq --arg sha "$sha" '.x86_64[0].sha256sum = $sha' fw.json > fw_tmp.json
+          mv fw_tmp.json fw.json
+
+      - name: Commit and push fw.json to api branch
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          rm -rf ./* .[^.]* || true  # 清空 api 分支中的旧内容
+          mv fw.json fw.json
+          git add fw.json
+          git commit -m "Update fw.json @ $(date -u '+%Y-%m-%d %H:%M:%S')"
+          git push origin HEAD:api --force
