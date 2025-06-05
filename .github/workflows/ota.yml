@@ -3,7 +3,7 @@ name: Update OTA JSON
 on:
   workflow_dispatch:  # 手动触发
   schedule:
-    - cron: '0 3 * * *'  # 每天凌晨 3 点自动执行一次（可改）
+    - cron: '0 6 * * *'  # 每天凌晨 6 点自动执行一次（可改）
 
 jobs:
   generate:
