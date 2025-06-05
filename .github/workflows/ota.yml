@@ -62,8 +62,8 @@ jobs:
 
       - name: Commit and push fw.json to api branch
         run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
+          git config --global user.email "194788255+Jaykwok2999@users.noreply.github.com"
+          git config --global user.name "Jaykwok2999"
           rm -rf ./* .[^.]* || true  # 清空 api 分支中的旧内容
           mv fw.json fw.json
           git add fw.json
