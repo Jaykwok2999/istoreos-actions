@@ -1,4 +1,4 @@
-name: Update OTA JSON
+name: 更新ota.json
 
 on:
   workflow_dispatch:  # 手动触发
