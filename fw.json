@@ -1,14 +1,14 @@
 {
   "x86_64": [
     {
-      "x86_64": "20260214",
-      "build_date": "1771041853",
-      "filename": "istoreos-24.10.5-2026021416-x86-64-squashfs-combined-efi.img.gz",
-      "size": 297305515,
-      "sha256sum": "651ab8ee026de589554cc59be703d67de249c4dc9cd7e12e78759d4b9e486736",
-      "url": "https://pro.sos07.eu.org/https://github.com/Jaykwok2999/istoreos-actions/releases/download/20260214/istoreos-24.10.5-2026021416-x86-64-squashfs-combined-efi.img.gz",
-      "release_url": "https://github.com/Jaykwok2999/istoreos-actions/releases/tag/20260214"
+      "x86_64": "20260217",
+      "build_date": "1771308096",
+      "filename": "istoreos-24.10.5-2026021718-x86-64-squashfs-combined-efi.img.gz",
+      "size": 297309119,
+      "sha256sum": "3e01a1321a33d853639f6b3eb82426ae14a1336b8ec7d3820f570bab88d853aa",
+      "url": "https://pro.sos07.eu.org/https://github.com/Jaykwok2999/istoreos-actions/releases/download/20260217/istoreos-24.10.5-2026021718-x86-64-squashfs-combined-efi.img.gz",
+      "release_url": "https://github.com/Jaykwok2999/istoreos-actions/releases/tag/20260217"
     }
   ],
-  "count": 33
+  "count": 34
 }
