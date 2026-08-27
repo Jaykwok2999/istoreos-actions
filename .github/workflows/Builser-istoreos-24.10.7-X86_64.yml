@@ -1,4 +1,4 @@
-name: Builser-istoreos-24.10.7-X86_64
+name: Builser-istoreos-24.10.8-X86_64
 
 on:
   repository_dispatch:
@@ -162,7 +162,7 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
       uses: ncipollo/release-action@v1
       with:
-        name: istoreos-24.10.7 for ${{ env.DATE }}
+        name: istoreos-24.10.8 for ${{ env.DATE }}
         allowUpdates: true
         tag: ${{ env.FIRMWARE_TAG }}
         token: ${{ secrets.GITHUB_TOKEN }}
